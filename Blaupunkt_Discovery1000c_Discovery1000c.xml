@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<hardwareinfo version="4.2.6">
+<group title="Blaupunkt Discovery 1000c">
+<group title="System" subtitle="Android 5.1.1">
+<entry name="Model">Discovery 1000c</entry>
+<entry name="Manufacturer">Blaupunkt</entry>
+<entry name="Device">Discovery 1000c</entry>
+<entry name="Product">Discovery 1000c</entry>
+<entry name="Brand">Blaupunkt</entry>
+<entry name="Android Version">5.1.1 (Lollipop)</entry>
+<entry name="API Level">22</entry>
+<entry name="Build ID">LMY47V</entry>
+<entry name="Fingerprint">Allwinner/astar_yh/astar-yh:5.1.1/LMY47V/20150615:eng/test-keys</entry>
+</group>
+<group title="Display" subtitle="1024x600">
+<entry name="Size">1024x600</entry>
+<entry name="Refresh Rate">60 Hz</entry>
+<entry name="Default Orientation">Landscape</entry>
+<entry name="Physical Size">11.1" (28.2 cm)</entry>
+<entry name="Logical Size">Large</entry>
+<entry name="Density">160 dpi (Medium)</entry>
+<entry name="Pixels Per Inch">X: 216.75; Y: 95.25</entry>
+</group>
+<group title="Processor" subtitle="ARMv7">
+<entry name="Processor">ARMv7 Processor rev 5 (v7l)</entry>
+<entry name="Cores">4</entry>
+<entry name="Max Frequency">1344 Mhz</entry>
+<entry name="Instruction Sets">armeabi-v7a, armeabi</entry>
+<entry name="SIMD Instructions">NEON</entry>
+</group>
+<group title="Memory" subtitle="1002 MB">
+<entry name="System RAM">1002 MB</entry>
+<entry name="JVM Max Memory">64 MB</entry>
+<entry name="Internal Storage">4551 MB</entry>
+<entry name="External Storage">4551 MB (Emulated)</entry>
+</group>
+<group title="Back Camera" subtitle="1.9 megapixel">
+<group title="Summary">
+<entry name="Max Picture Size">1600x1200 (4:3)</entry>
+<entry name="Zoom">3x</entry>
+<entry name="Autofocus">Not supported</entry>
+<entry name="Orientation">0°</entry>
+</group>
+<group title="Picture">
+<entry name="Cancel_continuous_picture">False</entry>
+<entry name="Continuous Picture Path"></entry>
+<entry name="Is_continuous_picture_fast">False</entry>
+<entry name="Picture Format">Jpeg</entry>
+<entry name="Picture Format Values">Jpeg</entry>
+<entry name="Picture Mode">Normal</entry>
+<entry name="Picture Size">1600x1200</entry>
+<entry name="Picture Size Values">1600x1200</entry>
+</group>
+<group title="Preview">
+<entry name="Preview Format">Yuv420sp</entry>
+<entry name="Preview Format Values">Yuv420sp, Yuv420p</entry>
+<entry name="Preview Fps Range">3000, 60000</entry>
+<entry name="Preview Fps Range Values">(3000, 60000)</entry>
+<entry name="Preview Frame Rate">30</entry>
+<entry name="Preview Frame Rate Values">30</entry>
+<entry name="Preview Size">640x480</entry>
+<entry name="Preview Size Values">640x480</entry>
+<entry name="Preview_capture Size Height">600</entry>
+<entry name="Preview_capture Size Width">800</entry>
+</group>
+<group title="Video">
+<entry name="Preferred Preview Size For Video">640x480</entry>
+<entry name="Video Frame Format">Yuv420sp</entry>
+<entry name="Video Size">640x480</entry>
+<entry name="Video Size Values">640x480</entry>
+<entry name="Video Snapshot Supported">True</entry>
+</group>
+<group title="Focus">
+<entry name="Focus Areas">(0, 0, 0, 0, 0)</entry>
+<entry name="Focus Distances">0.10, 1.20, Infinity</entry>
+<entry name="Focus Mode">Fixed</entry>
+<entry name="Focus Mode Values">Fixed</entry>
+</group>
+<group title="Zoom">
+<entry name="Max Zoom">100</entry>
+<entry name="Smooth Zoom Supported">False</entry>
+<entry name="Zoom">0</entry>
+<entry name="Zoom Ratios">100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 130, 132, 134, 136, 138, 140, 142, 144, 146, 148, 150, 152, 154, 156, 158, 160, 162, 164, 166, 168, 170, 172, 174, 176, 178, 180, 182, 184, 186, 188, 190, 192, 194, 196, 198, 200, 202, 204, 206, 208, 210, 212, 214, 216, 218, 220, 222, 224, 226, 228, 230, 232, 234, 236, 238, 240, 242, 244, 246, 248, 250, 252, 254, 256, 258, 260, 262, 264, 266, 268, 270, 272, 274, 276, 278, 280, 282, 284, 286, 288, 290, 292, 294, 296, 298, 300</entry>
+<entry name="Zoom Supported">True</entry>
+</group>
+<group title="Whitebalance">
+<entry name="Whitebalance">Auto</entry>
+<entry name="Whitebalance Values">Auto, Incandescent, Fluorescent, Warm Fluorescent, Daylight, Cloudy Daylight</entry>
+</group>
+<group title="Exposure compensation">
+<entry name="Exposure Compensation">0</entry>
+<entry name="Exposure Compensation Step">1</entry>
+<entry name="Max Exposure Compensation">3</entry>
+<entry name="Min Exposure Compensation">3</entry>
+</group>
+<group title="Misc">
+<entry name="Antibanding">Auto</entry>
+<entry name="Antibanding Values">Auto</entry>
+<entry name="Auto Exposure Lock">0</entry>
+<entry name="Auto Exposure Lock Supported">True</entry>
+<entry name="Camera Hal Version">3000130327_V1.0</entry>
+<entry name="Capture Size Height">600</entry>
+<entry name="Capture Size Width">800</entry>
+<entry name="Effect">None</entry>
+<entry name="Effect Values">None, Mono, Negative, Sepia, Aqua</entry>
+<entry name="Focal Length">3.26491e+07</entry>
+<entry name="Horizontal View Angle">56.4</entry>
+<entry name="Jpeg Quality">95</entry>
+<entry name="Jpeg Thumbnail Height">240</entry>
+<entry name="Jpeg Thumbnail Quality">90</entry>
+<entry name="Jpeg Thumbnail Size Values">320x240, 0x0</entry>
+<entry name="Jpeg Thumbnail Width">320</entry>
+<entry name="Max Num Detected Faces Hw">0</entry>
+<entry name="Max Num Detected Faces Sw">0</entry>
+<entry name="Prop Facing">Back</entry>
+<entry name="Prop Orientation">0</entry>
+<entry name="Recording Hint">False</entry>
+<entry name="Rotation">0</entry>
+<entry name="Snap Path"></entry>
+<entry name="Vertical View Angle">39.4</entry>
+</group>
+</group>
+<group title="Front Camera" subtitle="1.9 megapixel">
+<group title="Summary">
+<entry name="Max Picture Size">1600x1200 (4:3)</entry>
+<entry name="Zoom">3x</entry>
+<entry name="Autofocus">Not supported</entry>
+<entry name="Orientation">0°</entry>
+</group>
+<group title="Picture">
+<entry name="Cancel_continuous_picture">False</entry>
+<entry name="Continuous Picture Path"></entry>
+<entry name="Is_continuous_picture_fast">False</entry>
+<entry name="Picture Format">Jpeg</entry>
+<entry name="Picture Format Values">Jpeg</entry>
+<entry name="Picture Mode">Normal</entry>
+<entry name="Picture Size">1600x1200</entry>
+<entry name="Picture Size Values">1600x1200</entry>
+</group>
+<group title="Preview">
+<entry name="Preview Format">Yuv420sp</entry>
+<entry name="Preview Format Values">Yuv420sp, Yuv420p</entry>
+<entry name="Preview Fps Range">3000, 60000</entry>
+<entry name="Preview Fps Range Values">(3000, 60000)</entry>
+<entry name="Preview Frame Rate">10</entry>
+<entry name="Preview Frame Rate Values">10</entry>
+<entry name="Preview Size">640x480</entry>
+<entry name="Preview Size Values">640x480</entry>
+<entry name="Preview_capture Size Height">600</entry>
+<entry name="Preview_capture Size Width">800</entry>
+</group>
+<group title="Video">
+<entry name="Preferred Preview Size For Video">640x480</entry>
+<entry name="Video Frame Format">Yuv420sp</entry>
+<entry name="Video Size">640x480</entry>
+<entry name="Video Size Values">640x480</entry>
+<entry name="Video Snapshot Supported">True</entry>
+</group>
+<group title="Focus">
+<entry name="Focus Areas">(0, 0, 0, 0, 0)</entry>
+<entry name="Focus Distances">0.10, 1.20, Infinity</entry>
+<entry name="Focus Mode">Fixed</entry>
+<entry name="Focus Mode Values">Fixed</entry>
+</group>
+<group title="Zoom">
+<entry name="Max Zoom">100</entry>
+<entry name="Smooth Zoom Supported">False</entry>
+<entry name="Zoom">0</entry>
+<entry name="Zoom Ratios">100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 130, 132, 134, 136, 138, 140, 142, 144, 146, 148, 150, 152, 154, 156, 158, 160, 162, 164, 166, 168, 170, 172, 174, 176, 178, 180, 182, 184, 186, 188, 190, 192, 194, 196, 198, 200, 202, 204, 206, 208, 210, 212, 214, 216, 218, 220, 222, 224, 226, 228, 230, 232, 234, 236, 238, 240, 242, 244, 246, 248, 250, 252, 254, 256, 258, 260, 262, 264, 266, 268, 270, 272, 274, 276, 278, 280, 282, 284, 286, 288, 290, 292, 294, 296, 298, 300</entry>
+<entry name="Zoom Supported">True</entry>
+</group>
+<group title="Exposure compensation">
+<entry name="Exposure Compensation Step">1</entry>
+<entry name="Max Exposure Compensation">3</entry>
+<entry name="Min Exposure Compensation">3</entry>
+</group>
+<group title="Misc">
+<entry name="Antibanding">Auto</entry>
+<entry name="Antibanding Values">Auto</entry>
+<entry name="Auto Exposure Lock">0</entry>
+<entry name="Auto Exposure Lock Supported">True</entry>
+<entry name="Camera Hal Version">3000130327_V1.0</entry>
+<entry name="Capture Size Height">600</entry>
+<entry name="Capture Size Width">800</entry>
+<entry name="Focal Length">3.3697e+07</entry>
+<entry name="Horizontal View Angle">54</entry>
+<entry name="Jpeg Quality">95</entry>
+<entry name="Jpeg Thumbnail Height">240</entry>
+<entry name="Jpeg Thumbnail Quality">90</entry>
+<entry name="Jpeg Thumbnail Size Values">320x240, 0x0</entry>
+<entry name="Jpeg Thumbnail Width">320</entry>
+<entry name="Max Num Detected Faces Hw">0</entry>
+<entry name="Max Num Detected Faces Sw">0</entry>
+<entry name="Prop Facing">Front</entry>
+<entry name="Prop Orientation">0</entry>
+<entry name="Recording Hint">False</entry>
+<entry name="Rotation">0</entry>
+<entry name="Snap Path"></entry>
+<entry name="Vertical View Angle">39.4</entry>
+</group>
+</group>
+<group title="OpenGL 1.1" subtitle="Mali-400 MP2">
+<group title="General">
+<entry name="Renderer">Mali-400 MP2</entry>
+<entry name="Version">OpenGL ES-CM 1.1</entry>
+<entry name="Vendor">ARM</entry>
+</group>
+<group title="Limits">
+<entry name="Texture Size">4096x4096</entry>
+<entry name="Texture Units">8</entry>
+<entry name="Viewport Size">4096x4096</entry>
+<entry name="Modelview Stack Depth">32</entry>
+<entry name="Projection Stack Depth">32</entry>
+<entry name="Texture Stack Depth">32</entry>
+<entry name="Lights">8</entry>
+</group>
+<group title="Compressed Texture Formats">
+<entry >ETC1, Paletted</entry>
+</group>
+<group title="Extensions">
+<entry >GL_EXT_debug_marker GL_OES_byte_coordinates GL_OES_fixed_point GL_OES_single_precision GL_OES_matrix_get GL_OES_read_format GL_OES_compressed_paletted_texture GL_OES_point_size_array GL_OES_point_sprite GL_OES_texture_npot GL_OES_vertex_array_object GL_OES_query_matrix GL_OES_matrix_palette GL_OES_extended_matrix_palette GL_OES_compressed_ETC1_RGB8_texture GL_EXT_compressed_ETC1_RGB8_sub_texture GL_OES_EGL_image GL_OES_draw_texture GL_OES_depth_texture GL_OES_packed_depth_stencil GL_EXT_texture_format_BGRA8888 GL_OES_framebuffer_object GL_OES_stencil8 GL_OES_depth24 GL_ARM_rgba8 GL_OES_EGL_image_external GL_OES_EGL_sync GL_OES_rgb8_rgba8 GL_EXT_multisampled_render_to_texture GL_OES_texture_cube_map GL_EXT_discard_framebuffer GL_EXT_robustness GL_OES_depth_texture_cube_map GL_OES_vertex_half_float GL_KHR_debug GL_OES_mapbuffer </entry>
+</group>
+</group>
+<group title="OpenGL 2.0" subtitle="Mali-400 MP2">
+<group title="General">
+<entry name="Renderer">Mali-400 MP2</entry>
+<entry name="Version">OpenGL ES 2.0</entry>
+<entry name="Vendor">ARM</entry>
+<entry name="GLSL Version">OpenGL ES GLSL ES 1.00</entry>
+</group>
+<group title="Limits">
+<entry name="Texture Size">4096x4096</entry>
+<entry name="Texture Units">8</entry>
+<entry name="Vertex Textures">0</entry>
+<entry name="Combined Textures">8</entry>
+<entry name="Viewport Size">4096x4096</entry>
+<entry name="Renderbuffer Size">4096x4096</entry>
+<entry name="Cubemap Size">4096x4096</entry>
+<entry name="Vertex Attributes">16</entry>
+<entry name="Vertex Uniforms">256</entry>
+<entry name="Varying Vectors">12</entry>
+<entry name="Fragment Uniforms">256</entry>
+</group>
+<group title="Vertex Numeric Precision">
+<entry name="Int">[-2^24, 2^24]</entry>
+<entry name="Float">[-2^127, 2^127], 2^-23</entry>
+</group>
+<group title="Fragment Numeric Precision">
+<entry name="Low Int">[-2^11, 2^11]</entry>
+<entry name="Medium Int">[-2^11, 2^11]</entry>
+<entry name="High Int">Not available</entry>
+<entry name="Low Float">[-2^15, 2^15], 2^-10</entry>
+<entry name="Medium Float">[-2^15, 2^15], 2^-10</entry>
+<entry name="High Float">Not available</entry>
+</group>
+<group title="Compressed Texture Formats">
+<entry >ETC1</entry>
+</group>
+<group title="Extensions">
+<entry >GL_EXT_debug_marker GL_OES_texture_npot GL_OES_vertex_array_object GL_OES_compressed_ETC1_RGB8_texture GL_EXT_compressed_ETC1_RGB8_sub_texture GL_OES_standard_derivatives GL_OES_EGL_image GL_OES_depth24 GL_ARM_rgba8 GL_ARM_mali_shader_binary GL_OES_depth_texture GL_OES_packed_depth_stencil GL_EXT_texture_format_BGRA8888 GL_OES_vertex_half_float GL_EXT_blend_minmax GL_OES_EGL_image_external GL_OES_EGL_sync GL_OES_rgb8_rgba8 GL_EXT_multisampled_render_to_texture GL_EXT_discard_framebuffer GL_OES_get_program_binary GL_ARM_mali_program_binary GL_EXT_shader_texture_lod GL_EXT_robustness GL_OES_depth_texture_cube_map GL_KHR_debug GL_ARM_shader_framebuffer_fetch GL_ARM_shader_framebuffer_fetch_depth_stencil GL_OES_mapbuffer </entry>
+</group>
+</group>
+<group title="Graphic Modes" subtitle="RGBA 32bit">
+<entry >RGB 16bit (565)</entry>
+<entry >RGB 16bit (565), Depth 24bit, Stencil 8bit</entry>
+<entry >RGB 16bit (565), Depth 24bit, Stencil 8bit, Samples x4</entry>
+<entry >RGB 16bit (565), Depth 24bit, Stencil 8bit, Samples x16, Non-Conformant</entry>
+<entry >RGB 32bit (888)</entry>
+<entry >RGB 32bit (888), Depth 24bit</entry>
+<entry >RGB 32bit (888), Depth 24bit, Stencil 8bit</entry>
+<entry >RGB 32bit (888), Depth 24bit, Stencil 8bit, Samples x4</entry>
+<entry >RGB 32bit (888), Depth 24bit, Stencil 8bit, Samples x4, Non-Conformant</entry>
+<entry >RGB 32bit (888), Depth 24bit, Stencil 8bit, Samples x16, Non-Conformant</entry>
+<entry >RGBA 32bit (8888)</entry>
+<entry >RGBA 32bit (8888), Depth 24bit, Stencil 8bit</entry>
+<entry >RGBA 32bit (8888), Depth 24bit, Stencil 8bit</entry>
+<entry >RGBA 32bit (8888), Depth 24bit, Stencil 8bit</entry>
+<entry >RGBA 32bit (8888), Depth 24bit, Stencil 8bit</entry>
+<entry >RGBA 32bit (8888), Depth 24bit, Stencil 8bit, Samples x4</entry>
+<entry >RGBA 32bit (8888), Depth 24bit, Stencil 8bit, Samples x4</entry>
+<entry >RGBA 32bit (8888), Depth 24bit, Stencil 8bit, Samples x16, Non-Conformant</entry>
+</group>
+<group title="Sensors" subtitle="2">
+<group title="Temperature sensor">
+<entry name="Vendor">AW.</entry>
+<entry name="Range">125.0°C</entry>
+<entry name="Resolution">1.0°C</entry>
+<entry name="Power">0.35 mA</entry>
+<entry name="Delay">On Trigger</entry>
+</group>
+<group title="Bosch 3-axis Accelerometer">
+<entry name="Vendor">Bosch</entry>
+<entry name="Range">39.24 m/s²</entry>
+<entry name="Resolution">0.038320314 m/s²</entry>
+<entry name="Power">0.2 mA</entry>
+<entry name="Delay">On Trigger</entry>
+</group>
+</group>
+<group title="Codecs" subtitle="43">
+<group title="OMX.google.mp3.decoder">
+<group title="Media type: audio/mpeg">
+</group>
+</group>
+<group title="OMX.google.amrnb.decoder">
+<group title="Media type: audio/3gpp">
+</group>
+</group>
+<group title="OMX.google.amrwb.decoder">
+<group title="Media type: audio/amr-wb">
+</group>
+</group>
+<group title="OMX.google.aac.decoder">
+<group title="Media type: audio/mp4a-latm">
+</group>
+</group>
+<group title="OMX.google.g711.alaw.decoder">
+<group title="Media type: audio/g711-alaw">
+</group>
+</group>
+<group title="OMX.google.g711.mlaw.decoder">
+<group title="Media type: audio/g711-mlaw">
+</group>
+</group>
+<group title="OMX.google.vorbis.decoder">
+<group title="Media type: audio/vorbis">
+</group>
+</group>
+<group title="OMX.google.opus.decoder">
+<group title="Media type: audio/opus">
+</group>
+</group>
+<group title="OMX.google.raw.decoder">
+<group title="Media type: audio/raw">
+</group>
+</group>
+<group title="OMX.google.aac.encoder">
+<group title="Media type: audio/mp4a-latm">
+</group>
+</group>
+<group title="OMX.google.amrnb.encoder">
+<group title="Media type: audio/3gpp">
+</group>
+</group>
+<group title="OMX.google.amrwb.encoder">
+<group title="Media type: audio/amr-wb">
+</group>
+</group>
+<group title="OMX.google.flac.encoder">
+<group title="Media type: audio/flac">
+</group>
+</group>
+<group title="OMX.google.gsm.decoder">
+<group title="Media type: audio/gsm">
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.avc">
+<group title="Media type: video/avc">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+<entry name="Profiles: ">Baseline(0x7fffffff, 1, 11, 12, 13, 1b, 2, 21, 22, 3, 31, 32, 4, 41, 42, 5, 51) Main(0x7fffffff, 1, 11, 12, 13, 1b, 2, 21, 22, 3, 31, 32, 4, 41, 42, 5, 51) High(0x7fffffff, 1, 11, 12, 13, 1b, 2, 21, 22, 3, 31, 32, 4, 41, 42, 5, 51) </entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.mjpeg">
+<group title="Media type: video/jpeg">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.mpeg1">
+<group title="Media type: video/mpeg1">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.mpeg2">
+<group title="Media type: video/mpeg2">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.mpeg4">
+<group title="Media type: video/mp4v-es">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+<entry name="Profiles: ">Simple(0, 0b, 1, 2, 3, 4, 4a, 5) AdvancedSimple(0, 0b, 1, 2, 3, 4, 5) </entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.h263">
+<group title="Media type: video/3gpp">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+<entry name="Profiles: ">Baseline(10, 20, 30, 40, 45, 50, 60, 70) </entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.vp6">
+<group title="Media type: video/x-vnd.on2.vp6">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.vp8">
+<group title="Media type: video/x-vnd.on2.vp8">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.vc1">
+<group title="Media type: video/wvc1">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.msmpeg4v1">
+<group title="Media type: video/x-ms-mpeg4v1">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.msmpeg4v2">
+<group title="Media type: video/x-ms-mpeg4v2">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.divx">
+<group title="Media type: video/divx">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.xvid">
+<group title="Media type: video/xvid">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.s263">
+<group title="Media type: video/flv1">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.rxg2">
+<group title="Media type: video/rvg2">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.wmv1">
+<group title="Media type: video/wmv1">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.wmv2">
+<group title="Media type: video/wmv2">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.decoder.vp9">
+<group title="Media type: video/x-vnd.on2.vp9">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.allwinner.video.encoder.avc">
+<group title="Media type: video/avc">
+<entry name="Color Formats: ">YUV420Flexible YUV420SemiPlanar</entry>
+<entry name="Profiles: ">Baseline(0x7fffffff, 1, 11, 12, 13, 1b, 2, 21, 22, 3, 31, 41, 42, 5, 51) Main(0x7fffffff, 1, 11, 12, 13, 1b, 2, 21, 22, 3, 31, 32, 4, 41, 42, 5, 51) High(0x7fffffff, 1, 11, 12, 13, 1b, 2, 21, 22, 3, 31, 32, 4, 41, 42, 5, 51) </entry>
+</group>
+</group>
+<group title="OMX.google.mpeg4.decoder">
+<group title="Media type: video/mp4v-es">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+<entry name="Profiles: ">Simple(0, 0b, 1, 2, 3) </entry>
+</group>
+</group>
+<group title="OMX.google.h263.decoder">
+<group title="Media type: video/3gpp">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+<entry name="Profiles: ">Baseline(10, 20, 30, 45) ISWV2(10, 20, 30, 45) </entry>
+</group>
+</group>
+<group title="OMX.google.h264.decoder">
+<group title="Media type: video/avc">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+<entry name="Profiles: ">Baseline(1, 11, 12, 13, 1b, 2, 21, 22, 3, 31, 32, 4, 41, 42, 5, 51) </entry>
+</group>
+</group>
+<group title="OMX.google.hevc.decoder">
+<group title="Media type: video/hevc">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+<entry name="Profiles: ">0x1(0x1, 0x10, 0x100, 0x1000, 0x10000, 0x4, 0x40, 0x400, 0x4000) </entry>
+</group>
+</group>
+<group title="OMX.google.vp8.decoder">
+<group title="Media type: video/x-vnd.on2.vp8">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.google.vp9.decoder">
+<group title="Media type: video/x-vnd.on2.vp9">
+<entry name="Color Formats: ">YUV420Flexible</entry>
+</group>
+</group>
+<group title="OMX.google.h263.encoder">
+<group title="Media type: video/3gpp">
+<entry name="Color Formats: ">YUV420Flexible YUV420Planar YUV420SemiPlanar</entry>
+<entry name="Profiles: ">Baseline(45) </entry>
+</group>
+</group>
+<group title="OMX.google.h264.encoder">
+<group title="Media type: video/avc">
+<entry name="Color Formats: ">YUV420Flexible YUV420Planar YUV420SemiPlanar</entry>
+<entry name="Profiles: ">Baseline(2) </entry>
+</group>
+</group>
+<group title="OMX.google.mpeg4.encoder">
+<group title="Media type: video/mp4v-es">
+<entry name="Color Formats: ">YUV420Flexible YUV420Planar YUV420SemiPlanar</entry>
+<entry name="Profiles: ">Core(2) </entry>
+</group>
+</group>
+<group title="OMX.google.vp8.encoder">
+<group title="Media type: video/x-vnd.on2.vp8">
+<entry name="Color Formats: ">YUV420Flexible YUV420Planar YUV420SemiPlanar</entry>
+<entry name="Profiles: ">Main(Version0, Version1, Version2, Version3) </entry>
+</group>
+</group>
+</group>
+<group title="Features" subtitle="37">
+<group title="Graphics">
+<entry >OpenGL 2.0</entry>
+</group>
+<group title="Android Hardware">
+<entry >android.hardware.audio.output</entry>
+<entry >android.hardware.bluetooth</entry>
+<entry >android.hardware.bluetooth_le</entry>
+<entry >android.hardware.camera</entry>
+<entry >android.hardware.camera.any</entry>
+<entry >android.hardware.camera.front</entry>
+<entry >android.hardware.ethernet</entry>
+<entry >android.hardware.faketouch</entry>
+<entry >android.hardware.location</entry>
+<entry >android.hardware.location.gps</entry>
+<entry >android.hardware.location.network</entry>
+<entry >android.hardware.microphone</entry>
+<entry >android.hardware.screen.landscape</entry>
+<entry >android.hardware.screen.portrait</entry>
+<entry >android.hardware.sensor.accelerometer</entry>
+<entry >android.hardware.sensor.ambient_temperature</entry>
+<entry >android.hardware.touchscreen</entry>
+<entry >android.hardware.touchscreen.multitouch</entry>
+<entry >android.hardware.touchscreen.multitouch.distinct</entry>
+<entry >android.hardware.touchscreen.multitouch.jazzhand</entry>
+<entry >android.hardware.usb.accessory</entry>
+<entry >android.hardware.usb.host</entry>
+<entry >android.hardware.wifi</entry>
+<entry >android.hardware.wifi.direct</entry>
+</group>
+<group title="Android Software">
+<entry >android.software.app_widgets</entry>
+<entry >android.software.backup</entry>
+<entry >android.software.connectionservice</entry>
+<entry >android.software.device_admin</entry>
+<entry >android.software.home_screen</entry>
+<entry >android.software.input_methods</entry>
+<entry >android.software.live_wallpaper</entry>
+<entry >android.software.print</entry>
+<entry >android.software.sip</entry>
+<entry >android.software.sip.voip</entry>
+<entry >android.software.voice_recognizers</entry>
+<entry >android.software.webview</entry>
+</group>
+</group>
+</group>
+</hardwareinfo>
