@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
 
-    private TextView xText, yText, zText, mText;
+    private TextView xText, yText, zText, mText, tv1, tx1,tx2;
     private Sensor mySensor;
     private SensorManager sm;
     private float ax, ay, az;
@@ -31,8 +31,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private long lastUpdate = 0;
     private float last_x, last_y, last_z;
     private static final int SHAKE_THRESHOLD = 20;
-    private Button button2,button2,button2;
+
+
+    private Button b1,b2;
     private MediaPlayer mediaPlayer;
+
+    private double startTime = 0;
+    private double finalTime = 0;
+
+    private Handler myHandler = new Handler();
+    private SeekBar seekbar;
+
+    public static int oneTimeOnly = 0;
 
 
     @Override
@@ -57,8 +67,80 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         yText = (TextView)findViewById(R.id.yText);
         zText = (TextView)findViewById(R.id.zText);
         mText = (TextView)findViewById(R.id.mText);
+        b1 = (Button) findViewById(R.id.b1);
+        b2 = (Button) findViewById(R.id.b2);
+        tv1 = (TextView)findViewById(R.id.textView);
+        tv1.setText("Song.mp3");
+        tx1 = (TextView)findViewById(R.id.textView2);
+        tx2 = (TextView)findViewById(R.id.textView3);
+
+        //https://www.tutorialspoint.com/android/android_mediaplayer.htm
+        mediaPlayer = MediaPlayer.create(this, R.raw.song);
+        seekbar = (SeekBar)findViewById(R.id.seekBar);
+        seekbar.setClickable(false);
+        b1.setEnabled(false);
+
+       // mediaPlayer();
+
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Playing sound",Toast.LENGTH_SHORT).show();
+                mediaPlayer.start();
+
+                finalTime = mediaPlayer.getDuration();
+                startTime = mediaPlayer.getCurrentPosition();
+
+                if (oneTimeOnly == 0) {
+                    seekbar.setMax((int) finalTime);
+                    oneTimeOnly = 1;
+                }
+                tx2.setText(String.format("%d min, %d sec",
+                        TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
+                        TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
+                                        finalTime)))
+                );
+
+                tx1.setText(String.format("%d min, %d sec",
+                        TimeUnit.MILLISECONDS.toMinutes((long) startTime),
+                        TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
+                                        startTime)))
+                );
+                seekbar.setProgress((int)startTime);
+                myHandler.postDelayed(UpdateSongTime,100);
+                b1.setEnabled(true);
+                b2.setEnabled(false);
+            }
+        });
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Pausing sound",Toast.LENGTH_SHORT).show();
+                mediaPlayer.pause();
+                b1.setEnabled(false);
+                b2.setEnabled(true);
+            }
+        });
 
     }
+
+    private Runnable UpdateSongTime = new Runnable() {
+        public void run() {
+            startTime = mediaPlayer.getCurrentPosition();
+            tx1.setText(String.format("%d min, %d sec",
+                    TimeUnit.MILLISECONDS.toMinutes((long) startTime),
+                    TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
+                                    toMinutes((long) startTime)))
+            );
+            seekbar.setProgress((int)startTime);
+            myHandler.postDelayed(this, 100);
+        }
+    };
+
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -79,21 +161,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sumSqr = Math.pow(ax, 2) + Math.pow(ay, 2) + Math.pow(az, 2);
         am = Math.sqrt(sumSqr / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH));
         //https://code.tutsplus.com/tutorials/using-the-accelerometer-on-android--mobile-22125
-
-//        long curTime = System.currentTimeMillis();
-//
-//        if ((curTime - lastUpdate) > 100) {
-//            long diffTime = (curTime - lastUpdate);
-//            lastUpdate = curTime;
-//            float speed = Math.abs(ax + ay + az - last_x - last_y - last_z) / diffTime * 1000;
-//
-//            if (speed > SHAKE_THRESHOLD) {
-//
-//            }
-//            last_x = ax;
-//            last_y = ay;
-//            last_z = az;
-//        }
 
         xText.setText("X: " + ax);
         yText.setText("Y: " + ay);
@@ -118,6 +185,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onResume();
         sm.registerListener(this, sm.getDefaultSensor
                 (Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+    }
+    public void MediaPlayer(){
+
     }
 
 
