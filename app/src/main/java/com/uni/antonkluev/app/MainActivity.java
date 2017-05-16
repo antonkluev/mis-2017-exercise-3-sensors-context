@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.util.Log;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
