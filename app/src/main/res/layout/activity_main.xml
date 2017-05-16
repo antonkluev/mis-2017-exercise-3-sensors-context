@@ -1,101 +1,157 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context="com.uni.antonkluev.app.MainActivity">
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.uni.antonkluev.app.MainActivity">
 
     <TextView
+        android:id="@+id/songName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="X"
-        android:id="@+id/xText"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Y"
-        android:id="@+id/yText"
-        android:layout_below="@+id/xText"
-        android:layout_alignStart="@+id/xText"
-        android:layout_marginTop="30dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Z"
-        android:id="@+id/zText"
-        android:layout_below="@+id/yText"
-        android:layout_alignEnd="@+id/yText"
-        android:layout_marginTop="30dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="M"
-        android:id="@+id/mText"
-        android:layout_below="@+id/zText"
-        android:layout_alignEnd="@+id/yText"
-        android:layout_marginTop="30dp" />
-
-    <Button
-        android:id="@+id/b1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pause"
-        android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/zText" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/play"
-        android:id="@+id/b2"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/xText" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/textView"
-        android:layout_below="@+id/mText"
-        android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/seekBar"/>
+        android:layout_marginTop="8dp"
+        android:text="Song Name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        app:layout_constraintTop_toTopOf="@+id/button"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/textView2"
-        android:layout_above="@+id/seekBar"
-        android:layout_toLeftOf="@+id/textView"
-        android:layout_toStartOf="@+id/textView" />
+        android:text="00:00"
+        android:id="@+id/curTime"
+        app:layout_constraintTop_toTopOf="@+id/trackProgress"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="@+id/songName" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/textView3"
-        android:layout_above="@+id/seekBar"
-        android:layout_toRightOf="@+id/textView" />
+        android:text="00:00"
+        android:id="@+id/maxTime"
+        android:layout_marginRight="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/trackProgress"
+        android:layout_marginTop="12dp" />
 
     <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="match_parent"
+        android:id="@+id/trackProgress"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        app:layout_constraintRight_toLeftOf="@+id/maxTime"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/songName"
+        app:layout_constraintLeft_toRightOf="@+id/curTime"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:id="@+id/titleXYZ"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/b1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="38dp" />
+        android:layout_marginLeft="0dp"
+        android:text="XYZ and Magnitude"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+        app:layout_constraintLeft_toLeftOf="@+id/songName"
+        android:layout_marginTop="42dp"
+        app:layout_constraintTop_toBottomOf="@+id/trackProgress" />
+
+    <com.uni.antonkluev.app.CanvasView
+        android:id="@+id/accelerometerCanvasView"
+        android:layout_width="0dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/titleXYZ" />
+
+    <com.uni.antonkluev.app.CanvasView
+        android:id="@+id/fftCanvasView"
+        android:layout_width="0dp"
+        android:layout_height="140dp"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/titleFFT" />
+
+    <SeekBar
+        android:id="@+id/rateSeekBar"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/songName"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/titleRate" />
+
+    <SeekBar
+        android:id="@+id/windowSizeSeekBar"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/songName"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/titleWindowSize" />
+
+    <TextView
+        android:id="@+id/titleFFT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
+        android:text="FFT"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+        app:layout_constraintLeft_toLeftOf="@+id/songName"
+        app:layout_constraintTop_toBottomOf="@+id/accelerometerCanvasView" />
+
+    <TextView
+        android:id="@+id/titleRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
+        android:text="Rate"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+        app:layout_constraintLeft_toLeftOf="@+id/songName"
+        app:layout_constraintTop_toBottomOf="@+id/fftCanvasView" />
+
+    <TextView
+        android:id="@+id/titleWindowSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
+        android:text="Window Size"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+        app:layout_constraintLeft_toLeftOf="@+id/titleXYZ"
+        app:layout_constraintTop_toBottomOf="@+id/rateSeekBar" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="open..."
+        app:layout_constraintLeft_toRightOf="@+id/songName"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp" />
 
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
