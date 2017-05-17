@@ -70,13 +70,13 @@ public class CanvasView extends View {
         public double data [] = new double[maxWindowSize];
         public Path  path  = new Path();
         public Paint paint = new Paint();
-        private float min, max;
+        private double min, max;
         // methods
         public Axis (int color) {
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(color);
         }
-        public void setRange (float min, float max) {
+        public void setRange (double min, double max) {
             this.min = min;
             this.max = max;
         }
@@ -92,10 +92,10 @@ public class CanvasView extends View {
         }
         public void update () {
             for (int i = 0; i < windowSize; i ++) {
-                double vNew = (data[i] - min) / (max - min) * (height - 2 * padding);
+                float vNew = (float)(data[i] - min) / (float)(max - min) * (float)(height - 2 * padding);
                 // draw line
-                float left = width - i * width / (windowSize - 1f);
-                float top  = height - padding - (float)vNew;
+                float left = width - i * width / ((float)windowSize - 1f);
+                float top  = (float)height - (float)padding - vNew;
                 if (i == 0) {
                     path.reset();
                     path.moveTo(left, top);

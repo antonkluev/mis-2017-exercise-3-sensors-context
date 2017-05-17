@@ -105,15 +105,15 @@
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="0dp"
         android:layout_height="40dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:max="8"
-        android:progress="8"
-        app:layout_constraintTop_toBottomOf="@+id/titleWindowSize"
+        android:progress="4"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/rangeIndicator3"
-        android:layout_marginLeft="8dp"
         app:layout_constraintRight_toLeftOf="@+id/rangeIndicator4"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/titleWindowSize" />
 
     <TextView
         android:id="@+id/titleFFT"
@@ -166,7 +166,7 @@
         android:layout_marginLeft="0dp"
         app:layout_constraintLeft_toLeftOf="@+id/songName"
         app:layout_constraintTop_toTopOf="@+id/rateSeekBar"
-        android:layout_marginTop="12dp" />
+        android:layout_marginTop="11dp" />
 
     <TextView
         android:id="@+id/rangeIndicator2"
@@ -176,16 +176,16 @@
         android:layout_marginRight="16dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/rateSeekBar"
-        android:layout_marginTop="12dp" />
+        android:layout_marginTop="11dp" />
 
     <TextView
         android:id="@+id/rangeIndicator3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
-        android:layout_marginTop="12dp"
-        app:layout_constraintLeft_toLeftOf="@+id/songName"
         android:layout_marginLeft="0dp"
+        android:layout_marginTop="11dp"
+        android:text="4"
+        app:layout_constraintLeft_toLeftOf="@+id/songName"
         app:layout_constraintTop_toTopOf="@+id/windowSizeSeekBar" />
 
     <TextView
@@ -196,7 +196,7 @@
         android:layout_marginRight="16dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/windowSizeSeekBar"
-        android:layout_marginTop="12dp" />
+        android:layout_marginTop="11dp" />
 
 
 </android.support.constraint.ConstraintLayout>
