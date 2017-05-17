@@ -16,4 +16,9 @@ public class SongListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String value = intent.getStringExtra("key"); //if it's a string you stored.
     }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+////        finish();
+//    }
 }

@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
+
         //https://www.youtube.com/watch?v=YrI2pCZC8cc
         //https://github.com/amyork/Android_Studio_Tut_6_Accelerometer/blob/master/app/src/main/java/com/example/pc/accelerometer/MainActivity.java
         // Create our Sensor Manager
@@ -164,8 +165,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             for (int i = 0; i < windowSizeUpdate; i ++)
                 fftCanvasView.axis.get(2).data[i] = imagePart[i];
             fftCanvasView.axis.get(2).update();
-//            for (int i = 0; i < 1024; i ++)
-//                Log.v("fft", String.valueOf(fftCanvasView.axis.get(2).data[i]));
         }
     }
     @Override
@@ -174,12 +173,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // unregister listener
         super.onPause();
         sm.unregisterListener(this);
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        sm.registerListener(this,
-                sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL);
     }
 }
