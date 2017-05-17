@@ -1,9 +1,11 @@
 package com.uni.antonkluev.app;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import java.util.concurrent.TimeUnit;
@@ -14,15 +16,14 @@ import android.hardware.SensorEventListener;
 import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+import static android.R.attr.value;
+
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     private CanvasView customCanvas;
-    private SeekBar rateSeekBar;
-    private SeekBar windowSizeSeekBar;
-
+    private SeekBar rateSeekBar, windowSizeSeekBar, trackProgress;
     private TextView songName, curTime, maxTime;
     private MediaPlayer mediaPlayer;
-    private SeekBar trackProgress;
 
     private Handler myHandler = new Handler();
     public static int oneTimeOnly = 0;
@@ -54,6 +55,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+            }
+        });
+
+        // open song list
+        findViewById(R.id.openSongList).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getBaseContext(), SongListActivity.class);
+                myIntent.putExtra("key", value);
+                startActivity(myIntent);
             }
         });
 

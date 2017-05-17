@@ -14,7 +14,7 @@
         android:layout_marginTop="8dp"
         android:text="Song Name"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        app:layout_constraintTop_toTopOf="@+id/button"
+        app:layout_constraintTop_toTopOf="@+id/openSongList"
         android:layout_marginLeft="16dp"
         app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -144,7 +144,7 @@
         app:layout_constraintTop_toBottomOf="@+id/rateSeekBar" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/openSongList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
