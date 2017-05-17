@@ -6,21 +6,19 @@ import android.os.Bundle;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
 import android.widget.SeekBar;
-import java.util.concurrent.TimeUnit;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-
 import static android.R.attr.value;
+import com.uni.antonkluev.app.FFT;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
-    private CanvasView customCanvas;
+    private CanvasView accelerometerCanvasView, fftCanvasView;
     private SeekBar rateSeekBar, windowSizeSeekBar, trackProgress;
     private TextView songName, curTime, maxTime;
     private MediaPlayer mediaPlayer;
@@ -36,9 +34,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        accelerometerCanvasView = (CanvasView) findViewById(R.id.accelerometerCanvasView);
+        fftCanvasView = (CanvasView) findViewById(R.id.fftCanvasView);
         rateSeekBar = (SeekBar) findViewById(R.id.rateSeekBar);
         windowSizeSeekBar = (SeekBar) findViewById(R.id.windowSizeSeekBar);
-        customCanvas = (CanvasView) findViewById(R.id.accelerometerCanvasView);
         rateSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
@@ -54,7 +53,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                accelerometerCanvasView.windowSize = (int)Math.pow(2, progress);
             }
         });
 
@@ -146,6 +146,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
             getAccelerometer(event);
     }
+
+
     private void getAccelerometer(SensorEvent event) {
         //https://code.tutsplus.com/tutorials/using-the-accelerometer-on-android--mobile-22125
         double ax = event.values[0];
@@ -154,10 +156,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         double am = Math.sqrt(
                 (Math.pow(ax, 2) + Math.pow(ay, 2) + Math.pow(az, 2)) /
                         Math.pow(SensorManager.GRAVITY_EARTH, 2));
-        customCanvas.axis.get(0).addPoint(ax, -20, 20);
-        customCanvas.axis.get(1).addPoint(ay, -20, 20);
-        customCanvas.axis.get(2).addPoint(az, -20, 20);
-        customCanvas.axis.get(3).addPoint(am, -20, 20);
+        // draw axis
+        accelerometerCanvasView.axis.get(0).addPoint(ax, -15, 15);
+        accelerometerCanvasView.axis.get(1).addPoint(ay, -15, 15);
+        accelerometerCanvasView.axis.get(2).addPoint(az, -15, 15);
+        accelerometerCanvasView.axis.get(3).addPoint(am, 0,  2);
+        // draw fft
+        int size = accelerometerCanvasView.windowSize;
+        FFT fft = new FFT(size);
+        double [] fftInput  = new double[size];
+        double [] fftOutput = new double[size];
+        for (int i = 0; i < size; i ++)
+            if (i < accelerometerCanvasView.axis.get(3).data.size())
+                fftInput[i] = (double) accelerometerCanvasView.axis.get(3).data.get(i);
+            else
+                fftInput[i] = 0;
+        fft.fft(fftInput, fftOutput);
+        fftCanvasView.axis.get(2).setPoints(fftOutput);
     }
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {}

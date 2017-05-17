@@ -2,7 +2,6 @@
 package com.uni.antonkluev.app;
 
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -16,8 +15,8 @@ import java.util.ArrayList;
 public class CanvasView extends View {
     private int width;
     private int height;
-    private int sampleSize = 100;
     private int padding = 10;
+    public int windowSize = 1024;
     public ArrayList <Axis> axis = new ArrayList<Axis>();
     // methods
     public CanvasView(Context c, AttributeSet attrs) {
@@ -66,7 +65,7 @@ public class CanvasView extends View {
         }
     }
     public class Axis {
-        private ArrayList<Float> data = new ArrayList<Float>(); // gray
+        public ArrayList<Float> data = new ArrayList<Float>(); // gray
         public Path  path  = new Path();
         public Paint paint = new Paint();
         // methods
@@ -76,8 +75,8 @@ public class CanvasView extends View {
         }
         public void addPoint (double value, float min, float max) {
             float norm = ((float)value - min) / (max - min);
-            data.add(norm * height);
-            if (data.size() > sampleSize) data.remove(0);
+            data.add(norm * (height - 2 * padding));
+            if (data.size() > windowSize) data.remove(0);
             if (data.size() > 0) {
                 path.reset();
                 float w = width / (data.size() - 1f);
@@ -86,6 +85,14 @@ public class CanvasView extends View {
                     path.lineTo((float)i * w, height - padding - data.get(i));
                 postInvalidate();
             }
+        }
+        public void setPoints (double [] data) {
+            path.reset();
+            float w = width / (windowSize - 1f);
+            path.moveTo(0, height - padding - (float)data[0] - 100);
+            for (int i = 1; i < windowSize; i ++)
+                path.lineTo((float)i * w, height - padding - (float)data[i] - 100);
+            postInvalidate();
         }
     }
 }

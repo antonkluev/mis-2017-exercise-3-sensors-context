@@ -100,14 +100,16 @@
 
     <SeekBar
         android:id="@+id/windowSizeSeekBar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:max="10"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/songName"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/titleWindowSize" />
 
     <TextView
