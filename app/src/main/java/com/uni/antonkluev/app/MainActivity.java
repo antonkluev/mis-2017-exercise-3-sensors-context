@@ -14,7 +14,6 @@ import android.hardware.SensorEventListener;
 import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import static android.R.attr.value;
-import com.uni.antonkluev.app.FFT;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -22,10 +21,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private SeekBar rateSeekBar, windowSizeSeekBar, trackProgress;
     private TextView songName, curTime, maxTime;
     private MediaPlayer mediaPlayer;
-
+    private int windowSizeUpdate = 1024;
     private Handler myHandler = new Handler();
     public static int oneTimeOnly = 0;
     double startTime;
+    static int sensorRate = 10;
+    long lastSensorUpdate = System.currentTimeMillis();
 
     private SensorManager sm;
 
@@ -35,7 +36,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
 
         accelerometerCanvasView = (CanvasView) findViewById(R.id.accelerometerCanvasView);
+        accelerometerCanvasView.axis.get(0).setRange(-15, 15);
+        accelerometerCanvasView.axis.get(1).setRange( -5, 25);
+        accelerometerCanvasView.axis.get(2).setRange(-15, 15);
+        accelerometerCanvasView.axis.get(3).setRange(-15, 15);
+
         fftCanvasView = (CanvasView) findViewById(R.id.fftCanvasView);
+        fftCanvasView.axis.get(2).setRange(-20, 20);
+
         rateSeekBar = (SeekBar) findViewById(R.id.rateSeekBar);
         windowSizeSeekBar = (SeekBar) findViewById(R.id.windowSizeSeekBar);
         rateSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
@@ -44,8 +52,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
-            }
+            public void onProgressChanged(SeekBar seekBar, int progress ,boolean fromUser) {
+                lastSensorUpdate = progress;}
         });
         windowSizeSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             @Override
@@ -54,8 +62,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                accelerometerCanvasView.windowSize = (int)Math.pow(2, progress);
-            }
+               windowSizeUpdate = (int)Math.pow(2, progress + 2);}
         });
 
         // open song list
@@ -143,36 +150,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
-            getAccelerometer(event);
-    }
-
-
-    private void getAccelerometer(SensorEvent event) {
         //https://code.tutsplus.com/tutorials/using-the-accelerometer-on-android--mobile-22125
-        double ax = event.values[0];
-        double ay = event.values[1];
-        double az = event.values[2];
-        double am = Math.sqrt(
-                (Math.pow(ax, 2) + Math.pow(ay, 2) + Math.pow(az, 2)) /
-                        Math.pow(SensorManager.GRAVITY_EARTH, 2));
-        // draw axis
-        accelerometerCanvasView.axis.get(0).addPoint(ax, -15, 15);
-        accelerometerCanvasView.axis.get(1).addPoint(ay, -15, 15);
-        accelerometerCanvasView.axis.get(2).addPoint(az, -15, 15);
-        accelerometerCanvasView.axis.get(3).addPoint(am, 0,  2);
-        // draw fft
-        int size = accelerometerCanvasView.windowSize;
-        FFT fft = new FFT(size);
-        double [] fftInput  = new double[size];
-        double [] fftOutput = new double[size];
-        for (int i = 0; i < size; i ++)
-            if (i < accelerometerCanvasView.axis.get(3).data.size())
-                fftInput[i] = (double) accelerometerCanvasView.axis.get(3).data.get(i);
-            else
-                fftInput[i] = 0;
-        fft.fft(fftInput, fftOutput);
-        fftCanvasView.axis.get(2).setPoints(fftOutput);
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER
+        && System.currentTimeMillis() - lastSensorUpdate > sensorRate
+        ){
+            lastSensorUpdate = System.currentTimeMillis();
+            double ax = event.values[0];
+            double ay = event.values[1];
+            double az = event.values[2];
+            double am = Math.sqrt(
+                    (Math.pow(ax, 2) + Math.pow(ay, 2) + Math.pow(az, 2)) /
+                            Math.pow(SensorManager.GRAVITY_EARTH, 2));
+            // update the window Size
+            accelerometerCanvasView.windowSize = windowSizeUpdate;
+            fftCanvasView.windowSize = windowSizeUpdate;
+            // draw axis
+            accelerometerCanvasView.axis.get(0).add(ax);
+            accelerometerCanvasView.axis.get(1).add(ay);
+            accelerometerCanvasView.axis.get(2).add(az);
+            accelerometerCanvasView.axis.get(3).add(am);
+            // draw fft
+            FFT fft = new FFT(windowSizeUpdate);
+            fft.fft(accelerometerCanvasView.axis.get(3).data, fftCanvasView.axis.get(2).data);
+            fftCanvasView.axis.get(2).update();
+        }
     }
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {}
