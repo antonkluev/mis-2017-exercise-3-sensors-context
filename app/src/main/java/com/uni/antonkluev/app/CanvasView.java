@@ -2,7 +2,6 @@
 package com.uni.antonkluev.app;
 
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -16,8 +15,9 @@ import java.util.ArrayList;
 public class CanvasView extends View {
     private int width;
     private int height;
-    private int sampleSize = 100;
     private int padding = 10;
+    public int windowSize = 1024;
+    public int maxWindowSize = 1024;
     public ArrayList <Axis> axis = new ArrayList<Axis>();
     // methods
     public CanvasView(Context c, AttributeSet attrs) {
@@ -48,12 +48,13 @@ public class CanvasView extends View {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.LTGRAY);
+        int [] values = new int []{-2, -1, 0, 1, 2};
         int size = 5;
         float x = width - 2 * padding;
         float h  = (height - padding * 2) / (size - 1);
         for (int i = 0; i < size; i ++) {
             // draw numbers
-            String text = String.valueOf(i);
+            String text = String.valueOf(values[i]);
             float y = height - padding - i * h;
             Paint tp = new Paint();
             canvas.drawText(text,
@@ -66,26 +67,42 @@ public class CanvasView extends View {
         }
     }
     public class Axis {
-        private ArrayList<Float> data = new ArrayList<Float>(); // gray
+        public double data [] = new double[maxWindowSize];
         public Path  path  = new Path();
         public Paint paint = new Paint();
+        private double min, max;
         // methods
         public Axis (int color) {
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(color);
         }
-        public void addPoint (double value, float min, float max) {
-            float norm = ((float)value - min) / (max - min);
-            data.add(norm * height);
-            if (data.size() > sampleSize) data.remove(0);
-            if (data.size() > 0) {
-                path.reset();
-                float w = width / (data.size() - 1f);
-                path.moveTo(0, height - padding - data.get(0));
-                for (int i = 1; i < data.size(); i ++)
-                    path.lineTo((float)i * w, height - padding - data.get(i));
-                postInvalidate();
+        public void setRange (double min, double max) {
+            this.min = min;
+            this.max = max;
+        }
+        public void add (double value) {
+            double vNew = value;
+            for (int i = 0; i < maxWindowSize; i ++) {
+                // shift everything down
+                double t = vNew;
+                vNew = data[i];
+                data[i] = t;
             }
+            update();
+        }
+        public void update () {
+            for (int i = 0; i < windowSize; i ++) {
+                float vNew = (float)(data[i] - min) / (float)(max - min) * (float)(height - 2 * padding);
+                // draw line
+                float left = width - i * width / ((float)windowSize - 1f);
+                float top  = (float)height - (float)padding - vNew;
+                if (i == 0) {
+                    path.reset();
+                    path.moveTo(left, top);
+                } else
+                    path.lineTo(left, top);
+            }
+            postInvalidate();
         }
     }
 }
