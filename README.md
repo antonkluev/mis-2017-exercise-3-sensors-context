@@ -6,5 +6,5 @@
 - Anton Kliuyeu 118026
 
 
-####APK file
+#### APK file
 - Blaupunkt_Discovery1000c_Discovery1000c.xml
