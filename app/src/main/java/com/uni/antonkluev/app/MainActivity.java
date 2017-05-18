@@ -1,23 +1,30 @@
 package com.uni.antonkluev.app;
 
 import android.database.Cursor;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.media.MediaPlayer;
-import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -46,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         initPlayer();
         initLocationServices();
         initSpinner();
+
+
     }
     @Override
     protected void onDestroy() {
@@ -106,6 +115,77 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sm.registerListener(this,
                 sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
+        //https://www.youtube.com/watch?v=qS1E-Vrk60E&t=1s
+
+        locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    double longitude = location.getLongitude();
+                    double latitude = location.getLatitude();
+                    // get the speed
+                    speed = location.getSpeed();
+                    // change the value for speed; from m/s to km/h
+                    speed = ((speed * 3600)/1000);
+                    Log.v("speed", String.valueOf(speed));
+                    Toast.makeText(getApplicationContext(), "Your speed is " + speed + "latitude" + latitude + "longitude" + longitude , Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            });
+        }
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    double longitude = location.getLongitude();
+                    double latitude = location.getLatitude();
+                    // get the speed
+                    speed = location.getSpeed();
+                    // change the value for speed; from m/s to km/h
+                    speed = ((speed * 3600)/1000);
+                    Log.v("speed", String.valueOf(speed));
+                    Toast.makeText(getApplicationContext(), "Your speed is " + speed + "latitude" + latitude + "longitude" + longitude , Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            });
+        }
+
+
+
+
     }
     // sensor logic
     @Override
@@ -238,4 +318,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 songs.add(songCursor.getString(1).toString());
         return songs;
     }
+
+
 }
