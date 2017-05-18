@@ -1,20 +1,26 @@
 package com.uni.antonkluev.app;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import static android.R.attr.value;
@@ -23,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private CanvasView accelerometerCanvasView, fftCanvasView;
     private SeekBar rateSeekBar, windowSizeSeekBar, trackProgress;
-    private TextView songName, curTime, maxTime;
+    private TextView curTime, maxTime;
     private MediaPlayer mediaPlayer;
     private int windowSizeUpdate = 64;
     private Handler myHandler = new Handler();
@@ -32,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     static int sensorRate = 10;
     long lastSensorUpdate = System.currentTimeMillis();
     FFT fft = new FFT(windowSizeUpdate);
+    Cursor songCursor;
+    String fileName;
 
     private SensorManager sm;
 
@@ -47,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         accelerometerCanvasView.axis.get(3).setRange(  0.0,  2.0);
 
         fftCanvasView = (CanvasView) findViewById(R.id.fftCanvasView);
-        fftCanvasView.axis.get(2).setRange(-10, 10);
+        fftCanvasView.axis.get(2).setRange(0, 30);
 
         rateSeekBar = (SeekBar) findViewById(R.id.rateSeekBar);
         windowSizeSeekBar = (SeekBar) findViewById(R.id.windowSizeSeekBar);
@@ -71,16 +79,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 fft = new FFT(windowSizeUpdate);}
         });
 
-        // open song list
-        findViewById(R.id.openSongList).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(getBaseContext(), SongListActivity.class);
-                myIntent.putExtra("key", value);
-                startActivity(myIntent);
-            }
-        });
-
+//        // open song list
+//        findViewById(R.id.openSongList).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent myIntent = new Intent(getBaseContext(), SongListActivity.class);
+//                myIntent.putExtra("key", value);
+//                startActivity(myIntent);
+//            }
+//        });
 
         //https://www.youtube.com/watch?v=YrI2pCZC8cc
         //https://github.com/amyork/Android_Studio_Tut_6_Accelerometer/blob/master/app/src/main/java/com/example/pc/accelerometer/MainActivity.java
@@ -91,18 +98,68 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
         // Assign TextView
-        songName = (TextView) findViewById(R.id.songName);
-        songName.setText("Song.mp3");
         curTime = (TextView) findViewById(R.id.curTime);
         maxTime = (TextView) findViewById(R.id.maxTime);
         //https://www.tutorialspoint.com/android/android_mediaplayer.html
         mediaPlayer = MediaPlayer.create(this, R.raw.song);
         trackProgress = (SeekBar) findViewById(R.id.trackProgress);
         trackProgress.setClickable(false);
+        // Song List
+        initSpinner();
+
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+    private void initSpinner () {
+        // create Adapter
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+//                R.array.songList, android.R.layout.simple_spinner_item);
+        ArrayAdapter adapter = new ArrayAdapter(this,
+                android.R.layout.simple_spinner_item, loadMusic());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // make spinner
+        Spinner spinner = (Spinner) findViewById(R.id.songList);
+        spinner.setAdapter(adapter);
+        // on click event
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id){
+                //move the Cursor to the correct item position
+                songCursor.moveToPosition(pos);
+                // if the file is already being played stop it
+                if(fileName != null && fileName == songCursor.getString(0)) {
+                    mediaPlayer.reset(); //reset the MediaPlayer
+                    fileName = ""; //reset the fileName
+                } else {
+                    fileName = songCursor.getString(0); //get the fileName
+                    try {
+                        if (mediaPlayer.isPlaying()) mediaPlayer.reset(); //reset if already playing
+                        mediaPlayer.setDataSource(fileName); //provide the source
+                        mediaPlayer.prepare(); //prepare the object
+                        mediaPlayer.start(); //start playback
+                    }
+                    catch (Exception e) {}
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent){}
+        });
+    }
+    @SuppressWarnings("deprecation")
+    private ArrayList loadMusic() {
+        // String array to hold the media data
+        String[] data = {MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media.DISPLAY_NAME};
+        // database query
+        songCursor = this.managedQuery(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                data, null, null, null);
+        ArrayList songs = new ArrayList();
+        Log.v("songs", String.valueOf(songCursor.getCount()));
+        if (songCursor != null)
+            while (songCursor.moveToNext())
+                songs.add(songCursor.getString(1).toString());
+        return songs;
     }
     private void resumeMusic () {
         mediaPlayer.start();
@@ -151,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             // update the window Size
             accelerometerCanvasView.windowSize = windowSizeUpdate;
             fftCanvasView.windowSize = windowSizeUpdate;
+
             // draw axis
             accelerometerCanvasView.axis.get(0).add(ax);
             accelerometerCanvasView.axis.get(1).add(ay);
@@ -162,8 +220,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             for (int i = 0; i < windowSizeUpdate; i ++)
                 realPart[i] = accelerometerCanvasView.axis.get(3).data[i];
             fft.fft(realPart, imagePart);
-            for (int i = 0; i < windowSizeUpdate; i ++)
-                fftCanvasView.axis.get(2).data[i] = imagePart[i];
+            for (int i = 0; i < fftCanvasView.windowSize; i ++)
+                fftCanvasView.axis.get(2).data[i] = Math.sqrt(Math.pow(realPart[i], 2) + Math.pow(imagePart[i], 2));
             fftCanvasView.axis.get(2).update();
         }
     }
