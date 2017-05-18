@@ -1,6 +1,5 @@
 package com.uni.antonkluev.app;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -19,11 +18,8 @@ import android.hardware.SensorEventListener;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
-
-import static android.R.attr.value;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -40,47 +36,68 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     FFT fft = new FFT(windowSizeUpdate);
     Cursor songCursor;
     String fileName;
-
     private SensorManager sm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        initGraphs();
+        initPlayer();
+        initLocationServices();
+        initSpinner();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+    private void initGraphs () {
+        // accelerometer graph
         accelerometerCanvasView = (CanvasView) findViewById(R.id.accelerometerCanvasView);
         accelerometerCanvasView.coordinatePlaneType = "horizontal";
         accelerometerCanvasView.axis.get(0).setRange(-15.0, 15.0);
         accelerometerCanvasView.axis.get(1).setRange( -5.0, 25.0);
         accelerometerCanvasView.axis.get(2).setRange(-15.0, 15.0);
         accelerometerCanvasView.axis.get(3).setRange(  0.0,  2.0);
-
+        // fft graph
         fftCanvasView = (CanvasView) findViewById(R.id.fftCanvasView);
         fftCanvasView.coordinatePlaneType = "vertical";
         fftCanvasView.axis.get(2).setRange(0, 50);
-
+        // seekbars
         rateSeekBar = (SeekBar) findViewById(R.id.rateSeekBar);
         windowSizeSeekBar = (SeekBar) findViewById(R.id.windowSizeSeekBar);
         rateSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             @Override
+            public void onProgressChanged(SeekBar seekBar, int progress ,boolean fromUser) {
+                sensorRate = progress;
+            }
+            @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress ,boolean fromUser) {
-                sensorRate = progress;}
         });
         windowSizeSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                windowSizeUpdate = (int)Math.pow(2, progress + 2);
+                fft = new FFT(windowSizeUpdate);
+            }
+            @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                windowSizeUpdate = (int)Math.pow(2, progress + 2);
-                fft = new FFT(windowSizeUpdate);}
         });
-
+    }
+    private void initPlayer () {
+        // Assign TextView
+        curTime = (TextView) findViewById(R.id.curTime);
+        maxTime = (TextView) findViewById(R.id.maxTime);
+        //https://www.tutorialspoint.com/android/android_mediaplayer.html
+        mediaPlayer = MediaPlayer.create(this, R.raw.song);
+        trackProgress = (SeekBar) findViewById(R.id.trackProgress);
+        trackProgress.setClickable(false);
+    }
+    private void initLocationServices () {
         //https://www.youtube.com/watch?v=YrI2pCZC8cc
         //https://github.com/amyork/Android_Studio_Tut_6_Accelerometer/blob/master/app/src/main/java/com/example/pc/accelerometer/MainActivity.java
         // Create our Sensor Manager
@@ -89,20 +106,92 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sm.registerListener(this,
                 sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
-        // Assign TextView
-        curTime = (TextView) findViewById(R.id.curTime);
-        maxTime = (TextView) findViewById(R.id.maxTime);
-        //https://www.tutorialspoint.com/android/android_mediaplayer.html
-        mediaPlayer = MediaPlayer.create(this, R.raw.song);
-        trackProgress = (SeekBar) findViewById(R.id.trackProgress);
-        trackProgress.setClickable(false);
-        // Song List
-        initSpinner();
+    }
+    // sensor logic
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        //https://code.tutsplus.com/tutorials/using-the-accelerometer-on-android--mobile-22125
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER
+        && System.currentTimeMillis() - lastSensorUpdate > sensorRate
+        ){
+            lastSensorUpdate = System.currentTimeMillis();
+            double ax = event.values[0];
+            double ay = event.values[1];
+            double az = event.values[2];
+            double am = Math.sqrt(
+                    (Math.pow(ax, 2) + Math.pow(ay, 2) + Math.pow(az, 2)) /
+                            Math.pow(SensorManager.GRAVITY_EARTH, 2));
+            // update the window Size
+            accelerometerCanvasView.windowSize = windowSizeUpdate;
+            // cut fft into half
+            fftCanvasView.windowSize = windowSizeUpdate / 2;
+
+            // draw axis
+            accelerometerCanvasView.axis.get(0).add(ax);
+            accelerometerCanvasView.axis.get(1).add(ay);
+            accelerometerCanvasView.axis.get(2).add(az);
+            accelerometerCanvasView.axis.get(3).add(am);
+            // fft
+            double [] realPart  = new double[windowSizeUpdate];
+            double [] imagePart = new double[windowSizeUpdate];
+            for (int i = 0; i < windowSizeUpdate; i ++)
+                realPart[i] = accelerometerCanvasView.axis.get(3).data[i];
+            fft.fft(realPart, imagePart);
+            for (int i = 0; i < fftCanvasView.windowSize; i ++)
+                fftCanvasView.axis.get(2).data[i] =
+                        Math.sqrt(Math.pow(realPart[i], 2) + Math.pow(imagePart[i], 2));
+            fftCanvasView.axis.get(2).update();
+            // now call logic to turn the music on or off
+            playerLogic();
+        }
     }
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+    protected void onPause() {
+        super.onPause();
+        sm.unregisterListener(this);
     }
+    // player logic
+    private void playerLogic () {
+        double  fftValue    = fftCanvasView.axis.get(2).data[10];
+        double  speed       = 10;
+        boolean fftWindow   = 10 < fftValue && fftValue < 11;
+        boolean speedWindow = 4 < speed && speed < 6;
+        if (fftWindow && speedWindow) {
+            if (!mediaPlayer.isPlaying()) resumeMusic();
+        } else {
+            if (mediaPlayer.isPlaying()) mediaPlayer.pause();
+        }
+    }
+    private void resumeMusic () {
+        mediaPlayer.start();
+        double finalTime = mediaPlayer.getDuration();
+        startTime = mediaPlayer.getCurrentPosition();
+        if (oneTimeOnly == 0) {
+            trackProgress.setMax((int) finalTime);
+            oneTimeOnly = 1;
+        }
+        maxTime.setText(String.format("%d:%d",
+                TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
+                TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
+                                finalTime)))
+        );
+        trackProgress.setProgress((int)startTime);
+        myHandler.postDelayed(new Runnable() {
+            public void run() {
+                startTime = mediaPlayer.getCurrentPosition();
+                curTime.setText(String.format("%d:%d",
+                        TimeUnit.MILLISECONDS.toMinutes((long) startTime),
+                        TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
+                                        toMinutes((long) startTime))));
+                trackProgress.setProgress((int)startTime);
+                myHandler.postDelayed(this, 100);
+            }
+        }, 100);
+    }
+    // Music selection
     private void initSpinner () {
         // create Adapter
         ArrayAdapter adapter = new ArrayAdapter(this,
@@ -148,79 +237,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             while (songCursor.moveToNext())
                 songs.add(songCursor.getString(1).toString());
         return songs;
-    }
-    private void resumeMusic () {
-        mediaPlayer.start();
-        double finalTime = mediaPlayer.getDuration();
-        startTime = mediaPlayer.getCurrentPosition();
-        if (oneTimeOnly == 0) {
-            trackProgress.setMax((int) finalTime);
-            oneTimeOnly = 1;
-        }
-        maxTime.setText(String.format("%d:%d",
-                TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
-                TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
-                                finalTime)))
-        );
-        trackProgress.setProgress((int)startTime);
-        myHandler.postDelayed(new Runnable() {
-            public void run() {
-                startTime = mediaPlayer.getCurrentPosition();
-                curTime.setText(String.format("%d:%d",
-                        TimeUnit.MILLISECONDS.toMinutes((long) startTime),
-                        TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
-                                        toMinutes((long) startTime))));
-                trackProgress.setProgress((int)startTime);
-                myHandler.postDelayed(this, 100);
-            }
-        },100);
-    }
-    private void pauseSong () {
-        mediaPlayer.pause();
-    }
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        //https://code.tutsplus.com/tutorials/using-the-accelerometer-on-android--mobile-22125
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER
-        && System.currentTimeMillis() - lastSensorUpdate > sensorRate
-        ){
-            lastSensorUpdate = System.currentTimeMillis();
-            double ax = event.values[0];
-            double ay = event.values[1];
-            double az = event.values[2];
-            double am = Math.sqrt(
-                    (Math.pow(ax, 2) + Math.pow(ay, 2) + Math.pow(az, 2)) /
-                            Math.pow(SensorManager.GRAVITY_EARTH, 2));
-            // update the window Size
-            accelerometerCanvasView.windowSize = windowSizeUpdate;
-            // cut fft into half
-            fftCanvasView.windowSize = windowSizeUpdate / 2;
-
-            // draw axis
-            accelerometerCanvasView.axis.get(0).add(ax);
-            accelerometerCanvasView.axis.get(1).add(ay);
-            accelerometerCanvasView.axis.get(2).add(az);
-            accelerometerCanvasView.axis.get(3).add(am);
-            // fft
-            double [] realPart  = new double[windowSizeUpdate];
-            double [] imagePart = new double[windowSizeUpdate];
-            for (int i = 0; i < windowSizeUpdate; i ++)
-                realPart[i] = accelerometerCanvasView.axis.get(3).data[i];
-            fft.fft(realPart, imagePart);
-            for (int i = 0; i < fftCanvasView.windowSize; i ++)
-                fftCanvasView.axis.get(2).data[i] =
-                        Math.sqrt(Math.pow(realPart[i], 2) + Math.pow(imagePart[i], 2));
-            fftCanvasView.axis.get(2).data[fftCanvasView.windowSize-1] = 0;
-            fftCanvasView.axis.get(2).update();
-        }
-    }
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
-    protected void onPause() {
-        // unregister listener
-        super.onPause();
-        sm.unregisterListener(this);
     }
 }
