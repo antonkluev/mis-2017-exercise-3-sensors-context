@@ -15,9 +15,10 @@ import java.util.ArrayList;
 public class CanvasView extends View {
     private int width;
     private int height;
-    private int padding = 10;
+    private int padding = 16;
     public int windowSize = 1024;
     public int maxWindowSize = 1024;
+    public String coordinatePlaneType = "horizontal";
     public ArrayList <Axis> axis = new ArrayList<Axis>();
     // methods
     public CanvasView(Context c, AttributeSet attrs) {
@@ -48,22 +49,40 @@ public class CanvasView extends View {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.LTGRAY);
-        int [] values = new int []{-2, -1, 0, 1, 2};
-        int size = 5;
-        float x = width - 2 * padding;
-        float h  = (height - padding * 2) / (size - 1);
-        for (int i = 0; i < size; i ++) {
-            // draw numbers
-            String text = String.valueOf(values[i]);
-            float y = height - padding - i * h;
-            Paint tp = new Paint();
-            canvas.drawText(text,
-                    x - tp.measureText(text) / 2,
-                    y - (tp.descent() + tp.ascent()) / 2, tp);
-            // draw line
-            path.moveTo(0, y);
-            path.lineTo(width - 3 * padding, y);
-            canvas.drawPath(path, paint);
+        if (coordinatePlaneType == "horizontal") {
+            double [] values = new double []{-1.0, -0.5, 0.0, 1.0, 2.0};
+            int size = 5;
+            float x = width - 2 * padding;
+            float h  = (height - padding * 2) / (size - 1);
+            for (int i = 0; i < size; i ++) {
+                // draw numbers
+                String text = String.valueOf(values[i]);
+                float y = height - padding - i * h;
+                Paint tp = new Paint();
+                canvas.drawText(text,
+                        x - tp.measureText(text) / 2,
+                        y - (tp.descent() + tp.ascent()) / 2, tp);
+                // draw line
+                path.moveTo(0, y);
+                path.lineTo(width - 3 * padding, y);
+                canvas.drawPath(path, paint);
+            }
+        } else if (coordinatePlaneType == "vertical") {
+            int max = (int) Math.pow(2, 5);
+            int size = windowSize > max? max: windowSize;
+            for (int i = 1; i < size; i ++) {
+                int x = i * width / size;
+                // draw text
+                String text = String.valueOf(i);
+                Paint tp = new Paint();
+                canvas.drawText(text,
+                        x - tp.measureText(text) / 2,
+                        10 - (tp.descent() + tp.ascent()) / 2, tp);
+                // draw line
+                path.moveTo(x, padding + 10);
+                path.lineTo(x, height - padding);
+                canvas.drawPath(path, paint);
+            }
         }
     }
     public class Axis {

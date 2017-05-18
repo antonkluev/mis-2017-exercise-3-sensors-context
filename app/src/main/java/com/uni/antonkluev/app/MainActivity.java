@@ -49,13 +49,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
 
         accelerometerCanvasView = (CanvasView) findViewById(R.id.accelerometerCanvasView);
+        accelerometerCanvasView.coordinatePlaneType = "horizontal";
         accelerometerCanvasView.axis.get(0).setRange(-15.0, 15.0);
         accelerometerCanvasView.axis.get(1).setRange( -5.0, 25.0);
         accelerometerCanvasView.axis.get(2).setRange(-15.0, 15.0);
         accelerometerCanvasView.axis.get(3).setRange(  0.0,  2.0);
 
         fftCanvasView = (CanvasView) findViewById(R.id.fftCanvasView);
-        fftCanvasView.axis.get(2).setRange(0, 30);
+        fftCanvasView.coordinatePlaneType = "vertical";
+        fftCanvasView.axis.get(2).setRange(0, 50);
 
         rateSeekBar = (SeekBar) findViewById(R.id.rateSeekBar);
         windowSizeSeekBar = (SeekBar) findViewById(R.id.windowSizeSeekBar);
@@ -79,16 +81,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 fft = new FFT(windowSizeUpdate);}
         });
 
-//        // open song list
-//        findViewById(R.id.openSongList).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent myIntent = new Intent(getBaseContext(), SongListActivity.class);
-//                myIntent.putExtra("key", value);
-//                startActivity(myIntent);
-//            }
-//        });
-
         //https://www.youtube.com/watch?v=YrI2pCZC8cc
         //https://github.com/amyork/Android_Studio_Tut_6_Accelerometer/blob/master/app/src/main/java/com/example/pc/accelerometer/MainActivity.java
         // Create our Sensor Manager
@@ -106,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         trackProgress.setClickable(false);
         // Song List
         initSpinner();
-
     }
     @Override
     protected void onDestroy() {
@@ -114,18 +105,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
     private void initSpinner () {
         // create Adapter
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-//                R.array.songList, android.R.layout.simple_spinner_item);
         ArrayAdapter adapter = new ArrayAdapter(this,
-                android.R.layout.simple_spinner_item, loadMusic());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                android.R.layout.select_dialog_item, loadMusic());
         // make spinner
         Spinner spinner = (Spinner) findViewById(R.id.songList);
         spinner.setAdapter(adapter);
         // on click event
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id){
-                //move the Cursor to the correct item position
+                // move the Cursor to the correct item position
                 songCursor.moveToPosition(pos);
                 // if the file is already being played stop it
                 if(fileName != null && fileName == songCursor.getString(0)) {
@@ -142,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     catch (Exception e) {}
                 }
             }
-            public void onNothingSelected(AdapterView<?> parent){}
+            public void onNothingSelected(AdapterView <?> parent){}
         });
     }
     @SuppressWarnings("deprecation")
@@ -207,7 +195,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             Math.pow(SensorManager.GRAVITY_EARTH, 2));
             // update the window Size
             accelerometerCanvasView.windowSize = windowSizeUpdate;
-            fftCanvasView.windowSize = windowSizeUpdate;
+            // cut fft into half
+            fftCanvasView.windowSize = windowSizeUpdate / 2;
 
             // draw axis
             accelerometerCanvasView.axis.get(0).add(ax);
@@ -221,7 +210,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 realPart[i] = accelerometerCanvasView.axis.get(3).data[i];
             fft.fft(realPart, imagePart);
             for (int i = 0; i < fftCanvasView.windowSize; i ++)
-                fftCanvasView.axis.get(2).data[i] = Math.sqrt(Math.pow(realPart[i], 2) + Math.pow(imagePart[i], 2));
+                fftCanvasView.axis.get(2).data[i] =
+                        Math.sqrt(Math.pow(realPart[i], 2) + Math.pow(imagePart[i], 2));
+            fftCanvasView.axis.get(2).data[fftCanvasView.windowSize-1] = 0;
             fftCanvasView.axis.get(2).update();
         }
     }
