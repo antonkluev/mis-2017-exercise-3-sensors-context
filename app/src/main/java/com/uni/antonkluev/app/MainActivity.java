@@ -143,8 +143,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
                         PackageManager.PERMISSION_GRANTED
-                ) {return;}
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                ) return;
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
@@ -164,8 +164,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 @Override
                 public void onProviderDisabled(String provider) {}
             });
-        }
-        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
@@ -174,31 +173,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     // get the speed
                     speed = location.getSpeed();
                     // change the value for speed; from m/s to km/h
-                    speed = ((speed * 3600)/1000);
-                    Log.v("speed", String.valueOf(speed));
-                    Toast.makeText(getApplicationContext(), "Your speed is " + speed + "latitude" + latitude + "longitude" + longitude , Toast.LENGTH_LONG).show();
+                    speed = ((speed * 3600) / 1000);
+//                    Toast.makeText(getApplicationContext(),
+//                            "Your speed is " + speed +
+//                            "latitude" + latitude +
+//                            "longitude" + longitude ,
+//                            Toast.LENGTH_LONG).show();
                 }
-
                 @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                }
-
+                public void onStatusChanged(String provider, int status, Bundle extras) {}
                 @Override
-                public void onProviderEnabled(String provider) {
-
-                }
-
+                public void onProviderEnabled(String provider) {}
                 @Override
-                public void onProviderDisabled(String provider) {
-
-                }
+                public void onProviderDisabled(String provider) {}
             });
-        }
-
-
-
-
     }
     // sensor logic
     @Override
@@ -306,6 +294,4 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 songs.add(songCursor.getString(1).toString());
         return songs;
     }
-
-
 }
