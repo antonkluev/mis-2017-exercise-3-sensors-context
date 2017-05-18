@@ -25,9 +25,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private CanvasView accelerometerCanvasView, fftCanvasView;
     private SeekBar rateSeekBar, windowSizeSeekBar, trackProgress;
-    private TextView curTime, maxTime;
-    private MediaPlayer mediaPlayer;
-    private int windowSizeUpdate = 64;
+    private TextView curTime, maxTime, frequencyValue;
+    private MediaPlayer mediaPlayer = new MediaPlayer();
+    private int windowSizeUpdate = 16;
     private Handler myHandler = new Handler();
     public static int oneTimeOnly = 0;
     double startTime;
@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         initGraphs();
         initPlayer();
         initLocationServices();
-        initSpinner();
     }
     @Override
     protected void onDestroy() {
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // fft graph
         fftCanvasView = (CanvasView) findViewById(R.id.fftCanvasView);
         fftCanvasView.coordinatePlaneType = "vertical";
-        fftCanvasView.axis.get(2).setRange(0, 50);
+        fftCanvasView.axis.get(2).setRange(0, 20);
         // seekbars
         rateSeekBar = (SeekBar) findViewById(R.id.rateSeekBar);
         windowSizeSeekBar = (SeekBar) findViewById(R.id.windowSizeSeekBar);
@@ -87,15 +86,36 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
         });
+        frequencyValue = (TextView) findViewById(R.id.frequencyValue);
     }
     private void initPlayer () {
         // Assign TextView
         curTime = (TextView) findViewById(R.id.curTime);
         maxTime = (TextView) findViewById(R.id.maxTime);
-        //https://www.tutorialspoint.com/android/android_mediaplayer.html
-        mediaPlayer = MediaPlayer.create(this, R.raw.song);
+        // https://www.tutorialspoint.com/android/android_mediaplayer.html
         trackProgress = (SeekBar) findViewById(R.id.trackProgress);
-        trackProgress.setClickable(false);
+        // create Adapter
+        ArrayAdapter adapter = new ArrayAdapter(this,
+                android.R.layout.select_dialog_item, loadMusic());
+        // make spinner
+        Spinner spinner = (Spinner) findViewById(R.id.songList);
+        spinner.setAdapter(adapter);
+        // on click event
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id){
+                // move the Cursor to the correct item position
+                songCursor.moveToPosition(pos);
+                fileName = songCursor.getString(0); //get the fileName
+                try {
+                    if (mediaPlayer.isPlaying()) mediaPlayer.reset(); //reset if already playing
+                    mediaPlayer.setDataSource(fileName); //provide the source
+                    mediaPlayer.prepare(); //prepare the object
+                    mediaPlayer.start(); //start playback
+                }
+                catch (Exception e) {}
+            }
+            public void onNothingSelected(AdapterView <?> parent){}
+        });
     }
     private void initLocationServices () {
         //https://www.youtube.com/watch?v=YrI2pCZC8cc
@@ -124,8 +144,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             // update the window Size
             accelerometerCanvasView.windowSize = windowSizeUpdate;
             // cut fft into half
-            fftCanvasView.windowSize = windowSizeUpdate / 2;
-
+            fftCanvasView.windowSize = windowSizeUpdate;
             // draw axis
             accelerometerCanvasView.axis.get(0).add(ax);
             accelerometerCanvasView.axis.get(1).add(ay);
@@ -153,15 +172,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
     // player logic
     private void playerLogic () {
-        double  fftValue    = fftCanvasView.axis.get(2).data[10];
-        double  speed       = 10;
-        boolean fftWindow   = 10 < fftValue && fftValue < 11;
-        boolean speedWindow = 4 < speed && speed < 6;
-        if (fftWindow && speedWindow) {
-            if (!mediaPlayer.isPlaying()) resumeMusic();
-        } else {
-            if (mediaPlayer.isPlaying()) mediaPlayer.pause();
+        if (mediaPlayer != null) {
+            double  fftValue    = fftCanvasView.axis.get(2).data[8];
+            double  speed       = 5;
+            boolean fftWindow   = 2 < fftValue && fftValue < 15;
+            boolean speedWindow = 4 < speed && speed < 6;
+            if (fftWindow && speedWindow) {
+                if (!mediaPlayer.isPlaying()) resumeMusic();
+            } else {
+                if (mediaPlayer.isPlaying()) mediaPlayer.pause();
+            }
+            frequencyValue.setText(String.valueOf(Math.round(fftValue * 100.0) / 100.0));
         }
+//        for (int i = 0; i < windowSizeUpdate; i ++)
+//            Log.v("values", String.valueOf(i) +" : "+ String.valueOf(fftCanvasView.axis.get(2).data[i]));
     }
     private void resumeMusic () {
         mediaPlayer.start();
@@ -190,37 +214,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 myHandler.postDelayed(this, 100);
             }
         }, 100);
-    }
-    // Music selection
-    private void initSpinner () {
-        // create Adapter
-        ArrayAdapter adapter = new ArrayAdapter(this,
-                android.R.layout.select_dialog_item, loadMusic());
-        // make spinner
-        Spinner spinner = (Spinner) findViewById(R.id.songList);
-        spinner.setAdapter(adapter);
-        // on click event
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id){
-                // move the Cursor to the correct item position
-                songCursor.moveToPosition(pos);
-                // if the file is already being played stop it
-                if(fileName != null && fileName == songCursor.getString(0)) {
-                    mediaPlayer.reset(); //reset the MediaPlayer
-                    fileName = ""; //reset the fileName
-                } else {
-                    fileName = songCursor.getString(0); //get the fileName
-                    try {
-                        if (mediaPlayer.isPlaying()) mediaPlayer.reset(); //reset if already playing
-                        mediaPlayer.setDataSource(fileName); //provide the source
-                        mediaPlayer.prepare(); //prepare the object
-                        mediaPlayer.start(); //start playback
-                    }
-                    catch (Exception e) {}
-                }
-            }
-            public void onNothingSelected(AdapterView <?> parent){}
-        });
     }
     @SuppressWarnings("deprecation")
     private ArrayList loadMusic() {
