@@ -6,7 +6,7 @@
 - Anton Kliuyeu 118026
 
 
-#### APK file
+#### Device Specs XML
 - `./Blaupunkt_Discovery1000c_Discovery1000c.xml`
 
 
